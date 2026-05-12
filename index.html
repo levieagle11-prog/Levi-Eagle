@@ -1,87 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Levi Eagle — Business Management</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Syne (display) + DM Sans (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- ============================================================
+       COMMAND PALETTE MODAL
+  ============================================================ -->
+  <div class="palette-overlay" id="paletteOverlay" aria-hidden="true">
+    <div class="palette-modal" id="paletteModal" role="dialog" aria-modal="true" aria-label="Command Palette">
+      <div class="palette-input-wrap">
+        <svg class="palette-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="paletteInput" class="palette-input" placeholder="Type a command or search..." autocomplete="off" spellcheck="false" />
+        <kbd class="palette-esc-hint">ESC</kbd>
+      </div>
+      <ul class="palette-list" id="paletteList" role="listbox">
+        <li class="palette-item" data-action="toggle-theme" role="option">
+          <span class="palette-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </span>
+          <span class="palette-item-label">Toggle Dark Mode</span>
+          <span class="palette-item-hint">Theme</span>
+        </li>
+        <li class="palette-item" data-action="download-resume" role="option">
+          <span class="palette-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </span>
+          <span class="palette-item-label">Download Resume</span>
+          <span class="palette-item-hint">PDF</span>
+        </li>
+        <li class="palette-item" data-action="copy-email" role="option">
+          <span class="palette-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </span>
+          <span class="palette-item-label">Copy Email Address</span>
+          <span class="palette-item-hint">levi.eagle11@gmail.com</span>
+        </li>
+        <li class="palette-item" data-action="jump-experience" role="option">
+          <span class="palette-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+          <span class="palette-item-label">Jump to Experience</span>
+          <span class="palette-item-hint">Section</span>
+        </li>
+        <li class="palette-item" data-action="jump-contact" role="option">
+          <span class="palette-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+          <span class="palette-item-label">Jump to Contact</span>
+          <span class="palette-item-hint">Section</span>
+        </li>
+      </ul>
+      <div class="palette-footer">
+        <span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
+        <span><kbd>↵</kbd> Select</span>
+        <span><kbd>ESC</kbd> Close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
   <nav class="nav" id="nav">
     <div class="nav-inner">
-      <a href="#hero" class="nav-logo">LE</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
+      <a href="#hero" class="nav-logo" aria-label="Home">LE</a>
+
+      <!-- ⌘K Palette Trigger -->
+      <button class="palette-trigger" id="paletteTrigger" aria-label="Open command palette">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <span>Search...</span>
+        <kbd>⌘K</kbd>
       </button>
+
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">About</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#education">Education</a></li>
+        <li>
+          <!-- Light / Dark Toggle -->
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+        </li>
         <li><a href="#contact" class="nav-cta">Contact</a></li>
       </ul>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
   <section class="hero" id="hero">
+    <div class="hero-orb" aria-hidden="true"></div>
+
     <div class="hero-content">
       <div class="hero-text">
-        <p class="hero-eyebrow reveal">Business Management</p>
-        <h1 class="hero-name reveal">Levi<br /><span>Eagle</span></h1>
-        <p class="hero-tagline reveal">Detail-oriented leader with hands-on experience in operations, administration, and cross-functional communication.</p>
-        <div class="hero-actions reveal">
+        <p class="hero-eyebrow fade-up">Business Management</p>
+        <h1 class="hero-name fade-up" style="--delay:.1s">Levi<br /><span class="accent-text">Eagle</span></h1>
+        <p class="hero-tagline fade-up" style="--delay:.2s">Detail-oriented leader with hands-on experience in operations, administration, and cross-functional communication.</p>
+
+        <div class="hero-actions fade-up" style="--delay:.3s">
           <a href="#contact" class="btn btn-primary">Get In Touch</a>
-          <a href="#experience" class="btn btn-ghost">View Experience</a>
+          <a href="assets/Levi_Eagle_Resume.pdf" download="Levi_Eagle_Resume.pdf" class="btn btn-resume">
+            Download Resume
+            <svg class="resume-dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </a>
         </div>
-        <div class="hero-meta reveal">
+
+        <div class="hero-meta fade-up" style="--delay:.4s">
           <span>📍 Roanoke, TX</span>
-          <span>·</span>
+          <span class="meta-dot">·</span>
           <span>Open to Opportunities</span>
         </div>
       </div>
-      <div class="hero-image reveal">
+
+      <div class="hero-image fade-up" style="--delay:.15s">
         <div class="hero-image-frame">
           <img src="assets/headshot.jpg" alt="Levi Eagle" />
         </div>
-        <div class="hero-image-accent"></div>
       </div>
     </div>
-    <div class="hero-scroll-hint">
+
+    <div class="hero-scroll-hint" aria-hidden="true">
       <span>Scroll</span>
       <div class="scroll-line"></div>
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- ============================================================
+       ABOUT
+  ============================================================ -->
   <section class="section about" id="about">
     <div class="container">
-      <div class="section-label reveal">About</div>
+      <p class="section-label fade-up">About</p>
       <div class="about-grid">
-        <div class="about-text reveal">
+        <div class="about-text fade-up" style="--delay:.1s">
           <h2 class="section-title">Driven by leadership,<br />grounded in detail.</h2>
           <p>I'm a Business Management sophomore at Pensacola Christian College with real-world experience spanning construction site supervision, administrative operations, and team leadership. I bring a proactive mindset and a track record of getting things done accurately and on time.</p>
-          <p>Whether I'm supporting project managers in the field or managing records in an office, I focus on clear communication and reliable execution.</p>
+          <p>Whether supporting project managers in the field or managing institutional records, I focus on clear communication and reliable execution.</p>
         </div>
-        <div class="about-stats reveal">
-          <div class="stat">
+        <div class="about-stats fade-up" style="--delay:.2s">
+          <div class="stat-card glass">
             <div class="stat-number">2+</div>
             <div class="stat-label">Years of Leadership Experience</div>
           </div>
-          <div class="stat">
+          <div class="stat-card glass">
             <div class="stat-number">22</div>
             <div class="stat-label">Players Led as Soccer Captain</div>
           </div>
-          <div class="stat">
+          <div class="stat-card glass">
             <div class="stat-number">5</div>
             <div class="stat-label">Microsoft Certifications</div>
           </div>
-          <div class="stat">
+          <div class="stat-card glass">
             <div class="stat-number">2</div>
             <div class="stat-label">Languages Spoken</div>
           </div>
@@ -90,14 +192,16 @@
     </div>
   </section>
 
-  <!-- EXPERIENCE -->
+  <!-- ============================================================
+       EXPERIENCE
+  ============================================================ -->
   <section class="section experience" id="experience">
     <div class="container">
-      <div class="section-label reveal">Experience</div>
-      <h2 class="section-title reveal">Where I've worked.</h2>
+      <p class="section-label fade-up">Experience</p>
+      <h2 class="section-title fade-up" style="--delay:.1s">Where I've worked.</h2>
       <div class="timeline">
 
-        <div class="timeline-item reveal">
+        <div class="timeline-item fade-up" style="--delay:.1s">
           <div class="timeline-meta">
             <span class="timeline-date">May – Aug 2025</span>
             <span class="timeline-company">Tegrity Contractors</span>
@@ -112,7 +216,7 @@
           </div>
         </div>
 
-        <div class="timeline-item reveal">
+        <div class="timeline-item fade-up" style="--delay:.2s">
           <div class="timeline-meta">
             <span class="timeline-date">2024 – Present</span>
             <span class="timeline-company">Pensacola Christian College</span>
@@ -126,7 +230,7 @@
           </div>
         </div>
 
-        <div class="timeline-item reveal">
+        <div class="timeline-item fade-up" style="--delay:.3s">
           <div class="timeline-meta">
             <span class="timeline-date">2022 – 2024</span>
             <span class="timeline-company">Byron Nelson High School</span>
@@ -145,87 +249,58 @@
     </div>
   </section>
 
-  <!-- SKILLS -->
+  <!-- ============================================================
+       SKILLS
+  ============================================================ -->
   <section class="section skills" id="skills">
     <div class="container">
-      <div class="section-label reveal">Skills & Certifications</div>
-      <h2 class="section-title reveal">What I bring to the table.</h2>
+      <p class="section-label fade-up">Skills & Certifications</p>
+      <h2 class="section-title fade-up" style="--delay:.1s">What I bring to the table.</h2>
       <div class="skills-grid">
-        <div class="skills-col reveal">
-          <h4>Tools & Software</h4>
+        <div class="skills-col fade-up" style="--delay:.1s">
+          <h4 class="skills-col-title">Tools & Software</h4>
           <div class="skill-tags">
-            <span class="tag">Microsoft Excel</span>
-            <span class="tag">Microsoft Outlook</span>
-            <span class="tag">Microsoft Word</span>
-            <span class="tag">Microsoft PowerPoint</span>
-            <span class="tag">Salesforce</span>
-            <span class="tag">Procore</span>
+            <span class="pill glass">Microsoft Excel</span>
+            <span class="pill glass">Microsoft Outlook</span>
+            <span class="pill glass">Microsoft Word</span>
+            <span class="pill glass">PowerPoint</span>
+            <span class="pill glass">Salesforce</span>
+            <span class="pill glass">Procore</span>
           </div>
         </div>
-        <div class="skills-col reveal">
-          <h4>Core Skills</h4>
+        <div class="skills-col fade-up" style="--delay:.2s">
+          <h4 class="skills-col-title">Core Skills</h4>
           <div class="skill-tags">
-            <span class="tag">Leadership</span>
-            <span class="tag">Communication</span>
-            <span class="tag">Problem Solving</span>
-            <span class="tag">Time Management</span>
-            <span class="tag">Team Coordination</span>
-            <span class="tag">Administrative Operations</span>
+            <span class="pill glass">Leadership</span>
+            <span class="pill glass">Communication</span>
+            <span class="pill glass">Problem Solving</span>
+            <span class="pill glass">Time Management</span>
+            <span class="pill glass">Team Coordination</span>
+            <span class="pill glass">Administrative Ops</span>
           </div>
         </div>
-        <div class="skills-col reveal">
-          <h4>Certifications</h4>
+        <div class="skills-col fade-up" style="--delay:.3s">
+          <h4 class="skills-col-title">Certifications</h4>
           <div class="cert-list">
-            <div class="cert-item">
-              <div class="cert-icon">✓</div>
-              <div>
-                <div class="cert-name">Excel Certified</div>
-                <div class="cert-org">Microsoft</div>
-              </div>
-            </div>
-            <div class="cert-item">
-              <div class="cert-icon">✓</div>
-              <div>
-                <div class="cert-name">Outlook Certified</div>
-                <div class="cert-org">Microsoft</div>
-              </div>
-            </div>
-            <div class="cert-item">
-              <div class="cert-icon">✓</div>
-              <div>
-                <div class="cert-name">PowerPoint Certified</div>
-                <div class="cert-org">Microsoft</div>
-              </div>
-            </div>
-            <div class="cert-item">
-              <div class="cert-icon">✓</div>
-              <div>
-                <div class="cert-name">Word Certified</div>
-                <div class="cert-org">Microsoft</div>
-              </div>
-            </div>
-            <div class="cert-item">
-              <div class="cert-icon">✓</div>
-              <div>
-                <div class="cert-name">OSHA 10</div>
-                <div class="cert-org">Occupational Safety</div>
-              </div>
-            </div>
+            <div class="cert-item"><div class="cert-check">✓</div><div><div class="cert-name">Excel Certified</div><div class="cert-org">Microsoft</div></div></div>
+            <div class="cert-item"><div class="cert-check">✓</div><div><div class="cert-name">Outlook Certified</div><div class="cert-org">Microsoft</div></div></div>
+            <div class="cert-item"><div class="cert-check">✓</div><div><div class="cert-name">PowerPoint Certified</div><div class="cert-org">Microsoft</div></div></div>
+            <div class="cert-item"><div class="cert-check">✓</div><div><div class="cert-name">Word Certified</div><div class="cert-org">Microsoft</div></div></div>
+            <div class="cert-item"><div class="cert-check">✓</div><div><div class="cert-name">OSHA 10</div><div class="cert-org">Occupational Safety</div></div></div>
           </div>
         </div>
       </div>
-
-      <div class="languages reveal">
-        <h4>Languages</h4>
+      <div class="languages fade-up" style="--delay:.4s">
+        <h4 class="skills-col-title">Languages</h4>
         <div class="lang-list">
           <div class="lang-item">
             <span class="lang-name">English</span>
-            <div class="lang-bar"><div class="lang-fill" style="width: 100%"></div></div>
+            <div class="lang-bar"><div class="lang-fill" style="--w:100%"></div></div>
             <span class="lang-level">Native</span>
           </div>
           <div class="lang-item">
             <span class="lang-name">Spanish</span>
-            <div class="lang-bar"><div class="lang-fill" style="width: 55%"></div></div>
+            <div class="lang-bar"><div class="lang-fill" style="--w:55%"></div></div>
             <span class="lang-level">Intermediate</span>
           </div>
         </div>
@@ -233,19 +308,21 @@
     </div>
   </section>
 
-  <!-- EDUCATION -->
+  <!-- ============================================================
+       EDUCATION
+  ============================================================ -->
   <section class="section education" id="education">
     <div class="container">
-      <div class="section-label reveal">Education</div>
-      <h2 class="section-title reveal">Academic background.</h2>
+      <p class="section-label fade-up">Education</p>
+      <h2 class="section-title fade-up" style="--delay:.1s">Academic background.</h2>
       <div class="edu-grid">
-        <div class="edu-card reveal">
+        <div class="edu-card glass fade-up" style="--delay:.1s">
           <div class="edu-year">2024 — Present</div>
           <div class="edu-degree">BS, Business Management</div>
           <div class="edu-school">Pensacola Christian College</div>
           <div class="edu-detail">Sophomore · Roanoke, TX</div>
         </div>
-        <div class="edu-card reveal">
+        <div class="edu-card glass fade-up" style="--delay:.2s">
           <div class="edu-year">2020 — 2024</div>
           <div class="edu-degree">High School Diploma</div>
           <div class="edu-school">Byron Nelson High School</div>
@@ -255,33 +332,26 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
   <section class="section contact" id="contact">
     <div class="container">
-      <div class="section-label reveal">Contact</div>
-      <h2 class="section-title reveal">Let's connect.</h2>
-      <p class="contact-sub reveal">I'm actively looking for opportunities where I can contribute, grow, and lead. Feel free to reach out.</p>
-      <div class="contact-links reveal">
-        <a href="mailto:levi.eagle11@gmail.com" class="contact-card">
+      <p class="section-label fade-up">Contact</p>
+      <h2 class="section-title fade-up" style="--delay:.1s">Let's connect.</h2>
+      <p class="contact-sub fade-up" style="--delay:.15s">I'm actively looking for opportunities where I can contribute, grow, and lead. Feel free to reach out.</p>
+      <div class="contact-links fade-up" style="--delay:.2s">
+        <a href="mailto:levi.eagle11@gmail.com" class="contact-card glass">
           <div class="contact-card-icon">✉</div>
-          <div>
-            <div class="contact-card-label">Email</div>
-            <div class="contact-card-value">levi.eagle11@gmail.com</div>
-          </div>
+          <div><div class="contact-card-label">Email</div><div class="contact-card-value">levi.eagle11@gmail.com</div></div>
         </a>
-        <a href="https://www.linkedin.com/in/levi-eagle" target="_blank" rel="noopener" class="contact-card">
+        <a href="https://www.linkedin.com/in/levi-eagle" target="_blank" rel="noopener" class="contact-card glass">
           <div class="contact-card-icon">in</div>
-          <div>
-            <div class="contact-card-label">LinkedIn</div>
-            <div class="contact-card-value">linkedin.com/in/levi-eagle</div>
-          </div>
+          <div><div class="contact-card-label">LinkedIn</div><div class="contact-card-value">linkedin.com/in/levi-eagle</div></div>
         </a>
-        <a href="tel:3367083524" class="contact-card">
+        <a href="tel:3367083524" class="contact-card glass">
           <div class="contact-card-icon">☎</div>
-          <div>
-            <div class="contact-card-label">Phone</div>
-            <div class="contact-card-value">(336) 708-3524</div>
-          </div>
+          <div><div class="contact-card-label">Phone</div><div class="contact-card-value">(336) 708-3524</div></div>
         </a>
       </div>
     </div>
@@ -291,9 +361,13 @@
   <footer class="footer">
     <div class="container footer-inner">
       <span>© 2025 Levi Eagle</span>
+      <span class="footer-hint">Press <kbd>⌘K</kbd> for quick actions</span>
       <span>Roanoke, TX</span>
     </div>
   </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
