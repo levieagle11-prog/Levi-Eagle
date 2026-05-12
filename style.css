@@ -8,10 +8,10 @@
    1. DESIGN TOKENS — CSS Variables
 ------------------------------------------------------------ */
 :root {
-  /* Accent: electric teal-cyan — used sparingly */
-  --accent:       #00D9C0;
-  --accent-glow:  rgba(0, 217, 192, 0.25);
-  --accent-dim:   rgba(0, 217, 192, 0.12);
+  /* Accent: slate-blue pulled from the tie in the headshot */
+  --accent:       #6A9FD8;
+  --accent-glow:  rgba(106, 159, 216, 0.22);
+  --accent-dim:   rgba(106, 159, 216, 0.10);
 
   /* Typography */
   --font-display: 'Syne', sans-serif;
@@ -44,15 +44,15 @@
 
 /* Dark Mode Palette */
 [data-theme="dark"] {
-  --bg:           #0A0A0A;
-  --bg-alt:       #111113;
+  --bg:           #080E1E;
+  --bg-alt:       #0D1526;
   --surface:      rgba(255, 255, 255, 0.04);
   --border:       rgba(255, 255, 255, 0.08);
   --border-glass: rgba(255, 255, 255, 0.08);
   --text:         #F0F0F0;
   --text-muted:   #8A8FA8;
   --text-faint:   #4A4F66;
-  --nav-bg:       rgba(10, 10, 10, 0.88);
+  --nav-bg:       rgba(8, 14, 30, 0.90);
   --shadow:       0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-lg:    0 24px 60px rgba(0, 0, 0, 0.6);
 }
