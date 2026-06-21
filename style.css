@@ -957,3 +957,83 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .about-stats  { grid-template-columns: 1fr 1fr; }
   .lang-item    { grid-template-columns: 70px 1fr 80px; }
 }
+
+
+/* ============================================================
+   11. NEXT-LEVEL POLISH
+   - Word-by-word section title reveals
+   - Cursor spotlight on glass cards
+   - Lenis smooth-scroll compatibility
+   ============================================================ */
+
+/* Disable native smooth-scroll so Lenis can take over */
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis-smooth { scroll-behavior: auto !important; }
+
+/* -------- Word-by-word section title reveal -------- */
+/* When a title is split, the container itself stops fading —
+   each word slides up from inside its own mask instead. */
+.section-title.split-words {
+  opacity: 1;
+  transform: none;
+}
+.section-title .word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.18;          /* match section-title line-height */
+  padding-bottom: 0.06em;     /* prevent descender (g, p, y) clipping */
+}
+.section-title .word {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--word-i, 0) * 0.055s);
+  will-change: transform;
+}
+.section-title.split-words.visible .word {
+  transform: translateY(0);
+}
+
+/* -------- Cursor spotlight on glass cards -------- */
+/* Skips small pills — only feels right on cards. */
+.stat-card.glass,
+.edu-card.glass,
+.contact-card.glass {
+  position: relative;
+  overflow: hidden;
+}
+.stat-card.glass::before,
+.edu-card.glass::before,
+.contact-card.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    480px circle at var(--mx, 50%) var(--my, 50%),
+    var(--spotlight-color),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+.stat-card.glass:hover::before,
+.edu-card.glass:hover::before,
+.contact-card.glass:hover::before {
+  opacity: 1;
+}
+/* Card content sits above the spotlight layer */
+.stat-card.glass > *,
+.edu-card.glass > *,
+.contact-card.glass > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Theme-aware spotlight intensity */
+[data-theme="light"] { --spotlight-color: rgba(106, 159, 216, 0.28); }
+[data-theme="dark"]  { --spotlight-color: rgba(106, 159, 216, 0.16); }
